@@ -1,2 +1,3 @@
-# CPSC-349-Projects
-a repo for projects in cpsc-349
+
+# SEE PDF FOR API_KEY.
+# THE PROJECT WILL NOT WORK WITHOUT IT
