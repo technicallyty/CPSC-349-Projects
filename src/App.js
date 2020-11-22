@@ -75,7 +75,6 @@ function App() {
 
   const highLightWinners = (IDs) => {
     let lost = Array(42).fill(true);
-    console.log(IDs);
     for(var i in IDs) {
       lost[IDs[i]] = false;
     }
@@ -212,10 +211,20 @@ function App() {
 
   const resetState = (e) => {
     var index = e.target.value;
-    setGame(history[index].gameBoard)
-    setMoves(history[index].moveHistory)
-    setIsRedTurn(history[index].redTurn)
-    setCurrMove(e.target.value);
+    if(index === "0") {
+      setGame(Array(42).fill(null))
+      setMoves({
+        red: [],
+        yellow: []
+      })
+      setIsRedTurn(true)
+      setCurrMove(0)
+    } else {
+      setGame(history[index].gameBoard)
+      setMoves(history[index].moveHistory)
+      setIsRedTurn(history[index].redTurn)
+      setCurrMove(e.target.value);
+    }
   }
 
   const swapOrderOfHistory = () => {
@@ -236,7 +245,6 @@ function App() {
         </h1>
       }
       <select onChange={resetState}>
-        <option value={null}></option>
         {history !== undefined &&
           history.map((hist, i) => {
             var row;
