@@ -4,6 +4,7 @@ import Slot from "./Slot.jsx";
 import Confetti from "react-confetti";
 
 function App() {
+  const [isChronological, setIsChronological] = useState(true)
   const [currMove, setCurrMove] = useState(0);
   const [history, setHistory] = useState([]);
   const [gameOver, setGameOver] = useState(false);
@@ -210,8 +211,8 @@ function App() {
   };
 
   const resetState = (e) => {
-    var index = e.target.value;
-    if (index === "0") {
+    let index = parseInt(e.target.value)
+    if (index === 0) {
       setGame(Array(42).fill(null));
       setMoves({
         red: [],
@@ -220,14 +221,30 @@ function App() {
       setIsRedTurn(true);
       setCurrMove(0);
     } else {
-      setGame(history[index].gameBoard);
-      setMoves(history[index].moveHistory);
-      setIsRedTurn(history[index].redTurn);
-      setCurrMove(e.target.value);
+      if(!isChronological) {
+        index = currMove - index
+        console.log(index)
+      }
+      if(index === 0) {
+        setGame(Array(42).fill(null));
+        setMoves({
+          red: [],
+          yellow: [],
+        });
+        setIsRedTurn(true);
+        setCurrMove(0);
+      } else {
+        setGame(history[index].gameBoard);
+        setMoves(history[index].moveHistory);
+        setIsRedTurn(history[index].redTurn);
+        setCurrMove(index);
+      }
+
     }
   };
 
   const swapOrderOfHistory = () => {
+    setIsChronological(!isChronological)
     var temp = [...history];
     temp.reverse();
     setHistory(temp);
@@ -248,9 +265,10 @@ function App() {
               col = (hist.lastMove % 7) + 1;
               row = parseInt(hist.lastMove / 7) + 1;
             }
+            let moveCount = isChronological ? i : currMove - i
             return (
               <option value={i} key={i}>
-                Move #{i}, Row: {row}, Col: {col}
+                Move #{moveCount}, Row: {row}, Col: {col}
               </option>
             );
           })}
