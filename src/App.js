@@ -3,14 +3,11 @@ import './App.css';
 import Slot from './Slot.jsx';
 import Confetti from 'react-confetti';
 
-//  to implement a history stepper,
-//  we can push every step we me make to an object. 
-//  when that object is clicked, set the current state to that object.
 function App() {
   const [currMove, setCurrMove] = useState(0);
   const [history, setHistory] = useState([]);
   const [gameOver, setGameOver] = useState(false);
-
+  const [losers, setLosers] = useState(Array(42).fill(false))
   //game related
   const [isRedTurn, setIsRedTurn] = useState(true)
   //game board as an array - used to control colors of the circles
@@ -66,8 +63,9 @@ function App() {
         alert("Draw")
       } else {
         var winner = checkWinner(checkEm);
-        if (winner) {
-         setGameOver(true)
+        if (winner.win) {
+          highLightWinners(winner.IDs)
+          setGameOver(true)
         } else {
           setIsRedTurn(!isRedTurn);
         }
@@ -75,11 +73,20 @@ function App() {
     }
   }
 
-  const checkWinner = (check) => {
-    check = check.sort(function (a, b) { return a - b; });
-    //check horizontal
+  const highLightWinners = (IDs) => {
+    let lost = Array(42).fill(true);
+    console.log(IDs);
+    for(var i in IDs) {
+      lost[IDs[i]] = false;
+    }
+
+    setLosers(lost);
+  }
+
+  const checkHorizontal = (check) => {
     var count = 0;
     var prev = check[0];
+    let winnerID = [];
     for (var i = 1; i < check.length; i++) {
       var curr = check[i];
       if (curr % 7 === 0) {
@@ -88,60 +95,115 @@ function App() {
       }
       if (prev + 1 === curr) {
         count++;
+        winnerID.push(prev);
         if (count === 3) {
-          console.log("horizontal winner")
-          return true;
+          winnerID.push(curr);
+          return {
+            win: true,
+            IDs: winnerID
+          }
         }
       } else {
         count = 0;
+        winnerID = [];
       }
       prev = curr;
     }
 
-    //  check veritcal
-    for (i = 0; i < check.length; i++) {
-      curr = check[i];
-      count = 0;
-      prev = curr;
+    return {
+      win: false,
+      IDs: null
+    };
+  }
+
+  const checkVertical = (check) => {
+    let winnerID = [];
+    for (var i = 0; i < check.length; i++) {
+      var curr = check[i];
+      var count = 0;
+      var prev = curr;
       for (var j = i + 1; j < check.length; j++) {
         if (prev + 7 === check[j]) {
           count++;
+          winnerID.push(prev);
           prev = check[j];
           if (count === 3) {
-            console.log("vertical winner")
-            return true;
+            winnerID.push(check[j]);
+            return {
+              win: true,
+              IDs: winnerID
+            }
           }
         }
       }
     }
 
+    return {
+      win: false,
+      IDs: null
+    };
+  }
 
+  const checkDiagonal = (check) => {
     //  check diagonal left to right
-    for (i = 0; i < check.length; i++) {
-      curr = check[i];
+    for (var i = 0; i < check.length; i++) {
+      var curr = check[i];
+
+      let winnerIDLR = [];
       var countLR = 0;
       var prevLR = curr;
 
+      let winnerIDRL = [];
       var countRL = 0;
       var prevRL = curr;
-      for (j = i + 1; j < check.length; j++) {
+      for (var j = i + 1; j < check.length; j++) {
         if (prevLR + 8 === check[j]) {
+          winnerIDLR.push(prevLR);
           countLR++;
           prevLR = check[j];
           if (countLR === 3) {
-            console.log("left-right diag winner")
-            return true;
+            winnerIDLR.push(check[j])
+            return {
+              win: true,
+              IDs: winnerIDLR
+            };
           }
         }
         if (prevRL + 6 === check[j]) {
+          winnerIDRL.push(prevRL)
           countRL++;
           prevRL = check[j];
           if (countRL === 3) {
-            console.log("right-left diag winner")
-            return true;
+            winnerIDRL.push(check[j])
+            return {
+              win: true,
+              IDs: winnerIDRL
+            };
           }
         }
       }
+    }
+
+    return false;
+  }
+
+  const checkWinner = (check) => {
+    check = check.sort(function (a, b) { return a - b; });
+
+    //check horizontal
+    var data = checkHorizontal(check);
+    if (data.win) {
+      return data;
+    }
+
+    data = checkVertical(check);
+    if (data.win) {
+      return data;
+    }
+
+    data = checkDiagonal(check);
+    if (data.win) {
+      return data;
     }
 
     // no winner found
@@ -169,7 +231,7 @@ function App() {
       { gameOver &&
         <h1 className="winner">
           Winner, {
-          isRedTurn ? "Red!" : "Yellow!"
+            isRedTurn ? "Red!" : "Yellow!"
           }
         </h1>
       }
@@ -198,7 +260,7 @@ function App() {
         {
           game.map((val, id) => {
             return (
-              <Slot id={id} fill={val} handleClick={circleClicked} key={id} />
+              <Slot id={id} fill={val} handleClick={circleClicked} key={id} loser={losers[id]}/>
             )
           })
         }
@@ -210,6 +272,3 @@ function App() {
 
 
 export default App;
-
-
-

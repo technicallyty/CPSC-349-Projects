@@ -1,52 +1,53 @@
+
 .container { 
-  margin-top: 30px;
-}
-
-
-.game-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-  gap: 2px 2px;
-  grid-template-areas:
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . .";
-    max-width: 1183px;
-    margin: 0 auto;
-}
-
-.fake-item {
-  height: 125px;
-  width: 125px;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid black;
-  margin-bottom: 4px;
-}
-
-.grid-item {
-  height: 125px;
-  width: 125px;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid blue;
-}
-
-.winner {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 72px;
-  background: -webkit-linear-gradient(red, yellow);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+    margin-top: 30px;
+  }
+  
+  
+  .game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 2px 2px;
+    grid-template-areas:
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . ."
+      ". . . . . . .";
+      max-width: 1183px;
+      margin: 0 auto;
+  }
+  
+  .fake-item {
+    height: 125px;
+    width: 125px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid black;
+    margin-bottom: 4px;
+  }
+  
+  .grid-item {
+    height: 125px;
+    width: 125px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid blue;
+  }
+  
+  .winner {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 72px;
+    background: -webkit-linear-gradient(red, yellow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }

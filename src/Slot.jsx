@@ -1,11 +1,9 @@
 import React from 'react'
 import './App.css';
 
-const Slot = ({id, fill, handleClick}) => {
+const Slot = ({id, fill, handleClick, loser}) => {
     return (
-        <div className="grid-item" onClick={()=>{handleClick(id)}} style={{backgroundColor: fill}}>
-            {id}
-        </div>
+        <div className="grid-item" onClick={()=>{handleClick(id)}} style={{backgroundColor: fill, opacity: loser ? 0.2 : 1}} />
     )
 }
 
