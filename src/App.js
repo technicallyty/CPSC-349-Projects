@@ -250,12 +250,13 @@ function App() {
             }
             return (
               <option value={i} key={i}>
-                Move #{i + 1}, Row: {row}, Col: {col}
+                Move #{i}, Row: {row}, Col: {col}
               </option>
             );
           })}
       </select>
       <button onClick={swapOrderOfHistory}>Switch Chronological Order</button>
+      <h3>Current Move: {currMove}</h3>
       <div className="game-grid">
         {game.map((val, id) => {
           return (
